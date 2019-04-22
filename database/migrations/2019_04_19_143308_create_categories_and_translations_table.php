@@ -20,14 +20,14 @@ class CreateCategoriesAndTranslationsTable extends Migration
         });
 
         Schema::table('meals', function(Blueprint $table) {
-            $table->integer('category_id')->unsigned()->nullable();
+            $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });
 
         Schema::create('category_translations', function(Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('category_id')->unsigned();
-            $table->integer('locale_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('locale_id')->unsigned();
 
             $table->string('title');
 

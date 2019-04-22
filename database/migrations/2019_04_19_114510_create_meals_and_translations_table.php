@@ -20,8 +20,8 @@ class CreateMealsAndTranslationsTable extends Migration
 
         Schema::create('meal_translations', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('meal_id')->unsigned();
-            $table->integer('locale_id')->unsigned();
+            $table->bigInteger('meal_id')->unsigned();
+            $table->bigInteger('locale_id')->unsigned();
 
             $table->string('title');
 
