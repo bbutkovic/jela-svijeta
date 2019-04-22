@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Meal;
 use App\Language;
 use Illuminate\Http\Request;
+use App\Http\Requests\MealListingRequest;
 use App\Http\Controllers\Controller;
 
 class MealController extends Controller
@@ -14,7 +15,7 @@ class MealController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Language $lang)
+    public function index(MealListingRequest $request, Language $lang)
     {
         //
     }

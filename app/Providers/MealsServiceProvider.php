@@ -19,7 +19,7 @@ class MealsServiceProvider extends ServiceProvider
     {
         $this->app->bind(Language::class, function($app) {
             $code = $app->request->get('lang') ?? config('app.fallback_locale', 'en');
-            return Language::where('code', $code)->first() ?? abort(404);
+            return Language::where('code', $code)->first();
         });
     }
 
