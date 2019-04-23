@@ -7,11 +7,16 @@ use App\Rules\CategoryRule;
 class MealListingRequest extends ApiRequest
 {
 
-    public function prepareForValidation() {    
-        $this->merge([
-            'tags' => explode(',', $this->input('tags')),
-            'with' => explode(',', $this->input('with')),
-            ]);
+    public function prepareForValidation() {
+        $toPrepare = ['tags', 'with'];
+        $prepared = [];
+        foreach($toPrepare as $field) {
+            $input = $this->input($field);
+            if($input) {
+                $prepared[$field] = preg_split('/\s*,\s*/', trim($input));
+            }
+        }
+        $this->merge($prepared);
     }
 
 
@@ -41,9 +46,9 @@ class MealListingRequest extends ApiRequest
                 new CategoryRule
             ],
             'tags' => 'sometimes|array',
-            'tags.*' => 'sometimes|integer',
+            'tags.*' => 'required|integer',
             'with' => 'sometimes|array',
-            'with.*' => 'sometimes|in:ingredients,category,tags|distinct',
+            'with.*' => 'required|in:ingredients,category,tags|distinct',
             'diff_time' => 'sometimes|integer',
         ];
     }
