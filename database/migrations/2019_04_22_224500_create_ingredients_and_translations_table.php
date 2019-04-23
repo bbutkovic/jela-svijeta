@@ -31,15 +31,15 @@ class CreateIngredientsAndTranslationsTable extends Migration
         Schema::create('ingredient_translations', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('ingredient_id')->unsigned();
-            $table->bigInteger('locale_id')->unsigned();
+            $table->string('locale');
 
             $table->string('title');
 
             $table->timestamps();
 
-            $table->unique(['ingredient_id', 'locale_id']);
+            $table->unique(['ingredient_id', 'locale']);
             $table->foreign('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade');
-            $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');
+            $table->foreign('locale')->references('code')->on('languages')->onDelete('cascade');
         });
     }
 
@@ -59,9 +59,9 @@ class CreateIngredientsAndTranslationsTable extends Migration
 
         Schema::table('ingredient_translations', function(Blueprint $table) {
             $table->dropForeign(['ingredient_id']);
-            $table->dropForeign(['locale_id']);
+            $table->dropForeign(['locale']);
             $table->dropColumn('ingredient_id');
-            $table->dropColumn('locale_id');
+            $table->dropColumn('locale');
         });
         Schema::dropIfExists('ingredients');
         Schema::dropIfExists('ingredient_meal');

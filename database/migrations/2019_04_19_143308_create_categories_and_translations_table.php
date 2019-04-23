@@ -27,15 +27,15 @@ class CreateCategoriesAndTranslationsTable extends Migration
         Schema::create('category_translations', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('category_id')->unsigned();
-            $table->bigInteger('locale_id')->unsigned();
+            $table->string('locale');
 
             $table->string('title');
 
             $table->timestamps();
 
-            $table->unique(['category_id', 'locale_id']);
+            $table->unique(['category_id', 'locale']);
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');
+            $table->foreign('locale')->references('code')->on('languages')->onDelete('cascade');
         });
     }
 
@@ -53,9 +53,9 @@ class CreateCategoriesAndTranslationsTable extends Migration
 
         Schema::table('category_translations', function(Blueprint $table) {
             $table->dropForeign(['category_id']);
-            $table->dropForeign(['locale_id']);
+            $table->dropForeign(['locale']);
             $table->dropColumn('category_id');
-            $table->dropColumn('locale_id');
+            $table->dropColumn('locale');
         });
         Schema::dropIfExists('categories');
         Schema::dropIfExists('category_translations');

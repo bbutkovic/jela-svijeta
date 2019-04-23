@@ -31,15 +31,15 @@ class CreateTagsAndTranslationsTable extends Migration
         Schema::create('tag_translations', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('tag_id')->unsigned();
-            $table->bigInteger('locale_id')->unsigned();
+            $table->string('locale');
 
             $table->string('title');
 
             $table->timestamps();
 
-            $table->unique(['tag_id', 'locale_id']);
+            $table->unique(['tag_id', 'locale']);
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
-            $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');
+            $table->foreign('locale')->references('code')->on('languages')->onDelete('cascade');
         });
     }
 
@@ -59,9 +59,9 @@ class CreateTagsAndTranslationsTable extends Migration
 
         Schema::table('tag_translations', function(Blueprint $table) {
             $table->dropForeign(['tag_id']);
-            $table->dropForeign(['locale_id']);
+            $table->dropForeign(['locale']);
             $table->dropColumn('tag_id');
-            $table->dropColumn('locale_id');
+            $table->dropColumn('locale');
         });
         Schema::dropIfExists('tags');
         Schema::dropIfExists('meal_tag');

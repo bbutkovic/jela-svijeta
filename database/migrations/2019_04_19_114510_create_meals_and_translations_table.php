@@ -22,15 +22,15 @@ class CreateMealsAndTranslationsTable extends Migration
         Schema::create('meal_translations', function(Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('meal_id')->unsigned();
-            $table->bigInteger('locale_id')->unsigned();
+            $table->string('locale');
 
             $table->string('title');
 
             $table->timestamps();
 
-            $table->unique(['meal_id', 'locale_id']);
+            $table->unique(['meal_id', 'locale']);
             $table->foreign('meal_id')->references('id')->on('meals')->onDelete('cascade');
-            $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');
+            $table->foreign('locale')->references('code')->on('languages')->onDelete('cascade');
         });
     }
 
@@ -43,9 +43,9 @@ class CreateMealsAndTranslationsTable extends Migration
     {
         Schema::table('meal_translations', function(Blueprint $table) {
             $table->dropForeign(['meal_id']);
-            $table->dropForeign(['locale_id']);
+            $table->dropForeign(['locale']);
             $table->dropColumn('meal_id');
-            $table->dropColumn('locale_id');
+            $table->dropColumn('locale');
         });
         Schema::dropIfExists('meals');
         Schema::dropIfExists('meal_translations');

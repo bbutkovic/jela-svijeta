@@ -21,14 +21,14 @@ trait Translatable {
      */
     public function translate($language, $withFallback = null) {
         if($language instanceof Language) {
-            $language = $language->id;
+            $language = $language->code;
         }
         return $this->parentTranslate($language, $withFallback);   
     }
 
     public function getTranslation($language, $withFallback = null) {
         if($language instanceof Language) {
-            $language = $language->id;
+            $language = $language->code;
         }
         return $this->parentGetTranslation($language, $withFallback);
     }
