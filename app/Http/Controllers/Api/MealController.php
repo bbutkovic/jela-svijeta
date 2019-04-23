@@ -49,9 +49,15 @@ class MealController extends Controller
             $mq->touchedAfter(Carbon::parse(strtotime($request->input('diff_time'))));
         }
 
-        $meals = $mq->get();
+        //Limit the search to per_page results, keeping the default at 5. Pass the query string into the paginator
+        $perPage = 5;
+        if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+        }
+        $paginator = $mq->paginate($perPage);
+        $paginator->appends($request->except('path'));
 
-        return (new MealCollection($meals))->setLanguage($lang);
+        return (new MealCollection($paginator))->setLanguage($lang);
     }
 
     /**
