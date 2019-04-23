@@ -16,6 +16,7 @@ class CreateMealsAndTranslationsTable extends Migration
         Schema::create('meals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('meal_translations', function(Blueprint $table) {
