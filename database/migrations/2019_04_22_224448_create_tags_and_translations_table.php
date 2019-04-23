@@ -35,6 +35,8 @@ class CreateTagsAndTranslationsTable extends Migration
 
             $table->string('title');
 
+            $table->timestamps();
+
             $table->unique(['tag_id', 'locale_id']);
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');

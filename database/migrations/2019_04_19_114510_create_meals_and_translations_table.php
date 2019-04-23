@@ -26,6 +26,8 @@ class CreateMealsAndTranslationsTable extends Migration
 
             $table->string('title');
 
+            $table->timestamps();
+
             $table->unique(['meal_id', 'locale_id']);
             $table->foreign('meal_id')->references('id')->on('meals')->onDelete('cascade');
             $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');

@@ -31,6 +31,8 @@ class CreateCategoriesAndTranslationsTable extends Migration
 
             $table->string('title');
 
+            $table->timestamps();
+
             $table->unique(['category_id', 'locale_id']);
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('locale_id')->references('id')->on('languages')->onDelete('cascade');
