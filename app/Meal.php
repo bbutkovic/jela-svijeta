@@ -59,24 +59,5 @@ class Meal extends Model
                 ->havingRaw('count(distinct tags.id) = ?', [count($tags)]);
         }, '=', count($tags));
         return $query;
-
-        // $tags = $request->input('tags');
-        // $mq->whereHas('tags', function($q) use($tags) {
-        //     $q->whereIn('tags.id', $tags)
-        //         ->havingRaw('count(distinct tags.id) = ?', [count($tags)]);
-        // }, '=', count($tags));
-    }
-
-    public function setStatusAfter(Carbon $time) {
-        $this->statusAfter = $time;
-    }
-
-    public function getStatusAttribute() {
-        if(!$this->statusAfter || ($this->created_at->gt($this->statusAfter))) {
-            return 'created';
-        } else if($this->updated_at->gt($this->statusAfter)) {
-            return 'updated';
-        }
-        return 'deleted';
     }
 }

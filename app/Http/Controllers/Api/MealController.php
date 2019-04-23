@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Meal;
+use App\Http\Resources\MealCollection;
 use App\Language;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,9 +22,17 @@ class MealController extends Controller
         $mq = (new Meal)->newQuery();
 
         //Select which data to include in the response
+        $with = [];
         if($request->has('with')) {
-            $mq->with($request->input('with'));
+            //For each selected object also fetch its translations
+            $with = $request->input('with');
+            foreach($with as $object) {
+                $with[] = $object . '.translations';
+            }
         }
+        //Always include translations for meals
+        $with[] = 'translations';
+        $mq->with($with);
 
         //Filter search by category ID
         if($request->has('category')) {
@@ -36,22 +45,13 @@ class MealController extends Controller
         }
 
         //Filter search by touched after timestamp
-        $diffTime = null;
         if($request->has('diff_time')) {
-            $diffTime = Carbon::parse($request->input('diff_time'));
-            $mq->touchedAfter($diffTime);
+            $mq->touchedAfter(Carbon::parse(strtotime($request->input('diff_time'))));
         }
 
         $meals = $mq->get();
-        
-        //In case we filtered the request by diff_time also check status
-        if($diffTime) {
-            $meals->each(function($meal) use($diffTime) {
-                $meal->setStatusAfter($diffTime);
-            });
-        }
 
-        return $meals;
+        return (new MealCollection($meals))->setLanguage($lang);
     }
 
     /**
