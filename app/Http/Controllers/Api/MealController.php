@@ -51,8 +51,6 @@ class MealController extends Controller
             $mq->withTrashed();
         }
 
-        //dd($mq->toSql());
-
         //Limit the search to per_page results, keeping the default at 5. Pass the query string into the paginator
         $perPage = 5;
         if($request->has('per_page')) {

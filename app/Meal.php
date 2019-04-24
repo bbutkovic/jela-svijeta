@@ -37,8 +37,8 @@ class Meal extends Model
         return $query->where(function($query) use($time, $columns) {
                 foreach($columns as $column) {
                     $query->orWhere(function($query) use($time, $column) {
-                        return $query->whereDate($column, '>', $time)
-                                     ->whereTime($column, '>', $time);
+                        return $query->whereDate($column, '>=', $time)
+                                     ->whereTime($column, '>=', $time);
                     });
                 }
                 return $query;

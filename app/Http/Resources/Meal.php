@@ -23,7 +23,11 @@ class Meal extends JsonResource
         $status = 'created';
         if($request->has('diff_time')) {
             $dt = Carbon::createFromTimestamp($request->input('diff_time'));
-            $status = $this->updated_at->gt($dt) ? 'updated' : 'deleted';
+            if($this->deleted_at && $this->deleted_at->gt($dt)) {
+                $status = 'deleted';
+            } else if(!$this->created_at->eq($this->updated_at) && $this->updated_at->gt($dt)) {
+                $status = 'updated';
+            }
         }
         $translation = $this->getTranslation($this->lang);
         $title = $translation ? $translation->title : '';
