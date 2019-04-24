@@ -32,10 +32,16 @@ class Meal extends Model
     }
 
     public function scopeTouchedAfter($query, Carbon $time) {
-        return $query->where(function($query) use($time) {
-            $query->where('created_at', '>', $time)
-                ->orWhere('deleted_at', '>', $time)
-                ->orwhere('updated_at', '>', $time);
+        $ts = $time->toDateTimeString();
+        $columns = ['created_at', 'updated_at', 'deleted_at'];
+        return $query->where(function($query) use($time, $columns) {
+                foreach($columns as $column) {
+                    $query->orWhere(function($query) use($time, $column) {
+                        return $query->whereDate($column, '>', $time)
+                                     ->whereTime($column, '>', $time);
+                    });
+                }
+                return $query;
         });
     }
 

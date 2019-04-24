@@ -46,8 +46,12 @@ class MealController extends Controller
 
         //Filter search by touched after timestamp
         if($request->has('diff_time')) {
-            $mq->touchedAfter(Carbon::parse(strtotime($request->input('diff_time'))));
+            $time = Carbon::createFromTimestamp($request->input('diff_time'));
+            $mq->touchedAfter($time);
+            $mq->withTrashed();
         }
+
+        //dd($mq->toSql());
 
         //Limit the search to per_page results, keeping the default at 5. Pass the query string into the paginator
         $perPage = 5;
