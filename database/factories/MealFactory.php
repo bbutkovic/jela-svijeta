@@ -3,25 +3,16 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use App\Meal;
-use App\Language;
 use Faker\Generator as Faker;
-use Faker\Factory as FakerFactory;
+use App\Helpers\FakerLocales;
+
 
 $factory->define(Meal::class, function (Faker $faker) {
-    $fakerLocales = [
-        'en' => 'en_US',
-        'hr' => 'hr_HR'
-    ];
-    $codes = Language::pluck('code');
+    $locales = FakerLocales::getLocales();
+    $titles = FakerLocales::format($locales, function($f) {
+        return $f->firstName();
+    });
 
-    $meal = [];
-    $type = $faker->randomElement(['soup', 'cake', 'pasta']);
-    foreach($codes as $code) {
-        if(isset($fakerLocales[$code])) {
-            $languageFaker = FakerFactory::create($fakerLocales[$code]);
-            $meal['title:' . $code] = $languageFaker->firstName() . ' ' . $type;
-        }
-    }
     $created = $faker->dateTimeBetween('-3 days', '-1 days');
     $updated = $faker->dateTimeBetween($created, '-1 days');
     $deleted = null;
@@ -29,9 +20,10 @@ $factory->define(Meal::class, function (Faker $faker) {
         $deleted = $faker->dateTimeBetween($updated, '-1 days');
     }
 
-    $meal['created_at'] = $created;
-    $meal['updated_at'] = $updated;
-    $meal['deleted_at'] = $deleted;
-
-    return $meal;
+    $meal = $titles->merge([
+        'created_at' => $created,
+        'updated_at' => $updated,
+        'deleted_at' => $deleted
+    ]);
+    return $meal->toArray();
 });
