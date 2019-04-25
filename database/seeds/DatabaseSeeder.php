@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
         $categories = Category::all();
         $this->createMeals($categories, $faker->numberBetween(15, 20));
     
-        $meals = Meal::all();
+        $meals = Meal::withTrashed()->get();
         $tags = Tag::pluck('id');
         $ingredients = Ingredient::pluck('id');
 
