@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Meal;
 use App\Http\Resources\MealCollection;
+use App\Http\Resources\Meal as MealResource;
 use App\Language;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\MealListingRequest;
+use App\Http\Requests\MealRequest;
 use App\Http\Controllers\Controller;
 
 class MealController extends Controller
@@ -89,9 +91,12 @@ class MealController extends Controller
      * @param  \App\Meal  $meal
      * @return \Illuminate\Http\Response
      */
-    public function show(Meal $meal)
+    public function show(MealRequest $request, Meal $meal, Language $lang)
     {
-        //
+        if($request->has('with')) {
+            $meal->load($request->input('with'));
+        }
+        return (new MealResource($meal))->setLanguage($lang);
     }
 
     /**

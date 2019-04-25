@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -46,6 +47,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceof ModelNotFoundException && $request->is('api/*')) {
+            $resourceName = strtolower(class_basename($exception->getModel()));
+
+            //Return a JSON 404 response on API routes
+            $response = [
+                'errors' => [
+                    'Requested resource not found.'
+                ],
+                'message' => 'The requested ' . $resourceName . ' not found.'
+            ];
+            return response()->json($response, 404);
+        }
         return parent::render($request, $exception);
     }
 }
