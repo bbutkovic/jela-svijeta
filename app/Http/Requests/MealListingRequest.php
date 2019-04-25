@@ -12,7 +12,7 @@ class MealListingRequest extends ApiRequest
         $prepared = [];
         foreach($toPrepare as $field) {
             $input = $this->input($field);
-            if($input) {
+            if($input && !is_array($input)) {
                 $prepared[$field] = preg_split('/\s*,\s*/', trim($input));
             }
         }
@@ -39,17 +39,17 @@ class MealListingRequest extends ApiRequest
     {
         return [
             'lang' => 'required|exists:languages,code',
-            'per_page' => 'sometimes|integer',
-            'page' => 'sometimes|integer',
+            'per_page' => 'sometimes|integer|min:1|max:20',
+            'page' => 'sometimes|integer|min:1',
             'category' => [
                 'sometimes',
                 new CategoryRule
             ],
             'tags' => 'sometimes|array',
-            'tags.*' => 'required|integer',
+            'tags.*' => 'required|integer|min:0',
             'with' => 'sometimes|array',
             'with.*' => 'required|in:ingredients,category,tags|distinct',
-            'diff_time' => 'sometimes|integer',
+            'diff_time' => 'sometimes|integer|min:0',
         ];
     }
 }
