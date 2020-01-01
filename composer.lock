@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dfecfef974ca67454f38da66cc69b2b",
+    "content-hash": "73a5af644a664d6580d56c37061b0c38",
     "packages": [
         {
             "name": "dimsav/laravel-translatable",
-            "version": "v9.4.0",
+            "version": "v10.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dimsav/laravel-translatable.git",
-                "reference": "5101036717e8201389382c77ebfdeafbe073ef06"
+                "reference": "0980ddd41bfa00f4ec2aef0de6d106f8e0471ae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dimsav/laravel-translatable/zipball/5101036717e8201389382c77ebfdeafbe073ef06",
-                "reference": "5101036717e8201389382c77ebfdeafbe073ef06",
+                "url": "https://api.github.com/repos/dimsav/laravel-translatable/zipball/0980ddd41bfa00f4ec2aef0de6d106f8e0471ae7",
+                "reference": "0980ddd41bfa00f4ec2aef0de6d106f8e0471ae7",
                 "shasum": ""
             },
             "require": {
@@ -65,7 +65,8 @@
                 "laravel",
                 "translation"
             ],
-            "time": "2019-02-28T08:12:22+00:00"
+            "abandoned": "astrotomic/laravel-translatable",
+            "time": "2019-06-03T06:56:57+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2071,7 +2072,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
